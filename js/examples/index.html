@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../dist/paycertify.js"></script>
+  </head>
+
+  <body>
+    <h1> Checkout </h1>
+
+    <form>
+
+      <label for="name">Name</label><br/>
+      <input value="John Doe" name="name" data-paycertify="name"/><br/><br/>
+
+      <label for="email">Email</label><br/>
+      <input value="john@doe.com" name="email" data-paycertify="email"/><br/><br/>
+
+      <label for="phone">Phone</label><br/>
+      <input value="+1 123 123-1234" name="phone" data-paycertify="phone"/><br/><br/>
+
+      <label for="address">Address</label><br/>
+      <input value="123 One Street" name="address" data-paycertify="address"/><br/><br/>
+
+      <label for="city">City</label><br/>
+      <input value="Campbell" name="city" data-paycertify="city"/><br/><br/>
+
+      <label for="state">State</label><br/>
+      <input value="CA" name="state" data-paycertify="state"/><br/><br/>
+
+      <label for="country">Country</label><br/>
+      <input value="US" name="country" data-paycertify="country"/><br/><br/>
+
+      <label for="zip">ZIP</label><br/>
+      <input value="30123" name="zip" data-paycertify="zip"/><br/><br/>
+
+      <input type="hidden" name="amount" data-paycertify="amount" value="1.00"/>
+
+      <input type="submit"/><br/><br/>
+
+    </form>
+
+    <script>
+      new PayCertify.Checkout({
+        // The PayCertify Fraud Portal API Key.
+        // Log in to paycertify.com to get this info or
+        // ask for it for PayCertify's support team.
+        apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjp7IiRvaWQiOiI1NjlhYjdlOGViYTI2NjQ2Y2MwMDAwMDQifSwiZXhwIjozMzA0NTMwNjMwMn0.d_nIFOyUkso0w24sC37-dmHzo-68M-xON41NFewTYKc',
+        
+        // Set of rules to prevent fraudulent transactions from happening.
+        rejectWhen: {
+          // mode can be 'and' / 'or'. when and, all options should be matched. 
+          // when or, if one option fails, the transaction will be halted.
+          // Default: 'and'
+          mode: 'and', 
+
+          // Options for recommendation are decline and review.
+          // Default: ['decline']
+          recommendation: ['decline', 'review'],
+
+          // Maximum amount of rules that can be triggered to pass through.
+          // Default: 1
+          maxRulesTriggered: 1,
+
+          // Maximum score tolerated. Minimum is 1 and maximum is 99.
+          // Default: 50
+          maxScore: 50,
+        }
+      });
+
+      // Add a listener to manage the error messages and append it as you'd
+      // like to your design. e.detail contains an object with the errors.
+      //
+      window.addEventListener('paycertifyCheckoutFailure', function (e) {
+        console.log(e.detail);
+      }, false);
+    </script>
+  </body>
+</html>

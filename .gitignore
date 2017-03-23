@@ -1,0 +1,5 @@
+ruby/paycertify-*
+**/.DS_Store
+**/tmp/*
+**/.git
+.idea
