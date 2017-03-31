@@ -65,7 +65,7 @@ So the JSON you'll send should look like this:
 
       // ...
 
-      "cardholderAuthentication" : {
+      "careholderAuthentication" : {
         "authenticationIndicator": "ECI_VALUE",
         "cardholderAuthenticationValue": "CAVV_VALUE"
       }
@@ -73,3 +73,21 @@ So the JSON you'll send should look like this:
   }
 }
 ```
+
+##### Using Authorize.NET SDK
+
+If you are using the Authorize.NET SDK in your project, you can set these values using it's setters
+provived by the SDK, for example (in PHP):
+
+```php
+<?php
+
+// ...
+
+$authnet->setAuthenticationIndicator("ECI_VALUE");
+$authnet->setCardholderAuthenticationValue("CAVV_VALUE");
+
+// ...
+
+```
+ 
