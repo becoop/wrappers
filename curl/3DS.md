@@ -3,7 +3,7 @@
 The 3D Secure platform-agnostic docs are a way to integrate to our products without a wrapper.
 In order to do this, you'll need as a requirement the `CURL` library installed to debug your requests and responses.
 
-- API TEST BASE URL: https://mpi.3dsintegrator.com/index-demo.php
+- API TEST BASE URL: https://mpi.3dsintegrator.com/index_demo.php
 - API LIVE BASE URL: https://mpi.3dsintegrator.com/index.php
 
 ### Authentication
