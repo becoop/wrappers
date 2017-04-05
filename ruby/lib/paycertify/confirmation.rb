@@ -2,17 +2,17 @@ module PayCertify
   class Confirmation
 
     class NoCredentialsError < StandardError; end
-    
-    API_ENDPOINT = 'https://www.paycertify.com/'
-    
+
+    API_ENDPOINT = 'https://api.paycertify.com/'
+
     MANDATORY_FIELDS = [
-      :transaction_id, :cc_last_four_digits, :name, :email, 
+      :transaction_id, :cc_last_four_digits, :name, :email,
       :phone, :amount, :currency, :payment_gateway
     ]
-    
+
     OPTIONAL_FIELDS = [
-      :status, :transaction_date, :order_description, :card_type, :name_on_card, 
-      :address, :city, :zip, :state, :country, :confirmation_type, :fraud_score_processing, :scheduled_messages, 
+      :status, :transaction_date, :order_description, :card_type, :name_on_card,
+      :address, :city, :zip, :state, :country, :confirmation_type, :fraud_score_processing, :scheduled_messages,
       :thank_you_page_url, :metadata
     ]
 
