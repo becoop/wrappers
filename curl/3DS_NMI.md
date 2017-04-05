@@ -64,10 +64,11 @@ In order to create a transaction with 3DS these fields also need to be sent:
 - `xid` Cardholder authentication transaction id. Format: base64 encoded **(this was obtained on the last step of 3DS)**
 - `cardholder_auth` Set 3D Secure condition. Values: 'verified' or 'attempted' (check the table below to know wich value you must send).
 
-|                 | Visa | Master | cardholder_auth   |
-|-----------------|------|--------|-------------------|
-| **`eci` value** | 05   | 02     | `verified`        |
-| **`eci` value** | 06   | 01     | `attempted`       |
+|                 | Visa | Master | cardholder_auth       |
+|-----------------|------|--------|-----------------------|
+| **`eci` value** | 05   | 02     | `verified`            |
+| **`eci` value** | 06   | 01     | `attempted`           |
+| `null`          | 07   | 00     | Not registered in 3DS |
 
 In words: If you got from 3DS an `eci` of 05 (for Visa) or 02 (for Mastercard), you should set the `cardholder_auth` as 
 `verified`. If you got from 3DS an `eci` of 06 (for Visa) or 01 (for Mastercard), you should set the `cardholder_auth` as 
