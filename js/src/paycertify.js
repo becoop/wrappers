@@ -7,10 +7,10 @@ if (typeof PayCertify === 'undefined') {
 
 PayCertify.Checkout = class {
   constructor(options) {
-    this.API_ENDPOINT = 'http://localhost:3000/api/v1/merchant/kount';
+    this.API_ENDPOINT = 'https://api.paycertify.com/api/v1/merchant/kount';
     this.API_KEY = options.apiKey;
     this.REQUIRED = [
-      'name', 'email', 'phone', 'address', 
+      'name', 'email', 'phone', 'address',
       'city', 'state', 'country', 'zip', 'amount'
     ];
 
@@ -33,7 +33,7 @@ PayCertify.Checkout = class {
   watchFormSubmit() {
     var that = this;
 
-    var onSubmit = (e) => {  
+    var onSubmit = (e) => {
       e.preventDefault();
 
       that.validate();
@@ -59,9 +59,9 @@ PayCertify.Checkout = class {
 
     for (var index in this.REQUIRED) {
       $input = this.inputFor(this.REQUIRED[index]);
-      
+
       if ($input && $input.value == '') {
-        this._addError(this.REQUIRED[index], 'Required field is empty.');          
+        this._addError(this.REQUIRED[index], 'Required field is empty.');
       }
     }
   }
@@ -73,7 +73,7 @@ PayCertify.Checkout = class {
   inputFor(field) {
     var selector = '[data-paycertify="'+field+'"]';
     var element = document.querySelector(selector);
-    
+
     if (element) {
       return element;
     } else {
@@ -107,7 +107,7 @@ PayCertify.Checkout = class {
 
   _submitData(callback) {
     var that = this;
-    
+
     // Set up AJAX
     var ajax = {};
 
@@ -115,7 +115,7 @@ PayCertify.Checkout = class {
       if (typeof XMLHttpRequest !== 'undefined') {
         return new XMLHttpRequest();
       }
-      
+
       var versions = [
         "MSXML2.XmlHttp.6.0",
         "MSXML2.XmlHttp.5.0",
@@ -126,7 +126,7 @@ PayCertify.Checkout = class {
       ];
 
       var xhr;
-      
+
       for (var i = 0; i < versions.length; i++) {
         try {
           xhr = new ActiveXObject(versions[i]);
@@ -138,38 +138,38 @@ PayCertify.Checkout = class {
       return xhr;
     };
 
-    ajax.send = function (url, callback, method, data) {  
+    ajax.send = function (url, callback, method, data) {
       var x = ajax.x();
       x.open(method, url, true);
-      
+
       x.onreadystatechange = function () {
         if (x.readyState == 4) {
             callback(x.responseText)
         }
       };
-      
+
       if (method == 'POST') {
         x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         x.setRequestHeader('PAYCERTIFYKEY', that.API_KEY)
       }
-      
+
       x.send(data)
     };
 
     ajax.post = function (url, data, callback) {
       var query = [];
-      
+
       for (var key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
       };
-      
+
       ajax.send(url, callback, 'POST', query.join('&'));
     };
 
     // Submit data to the API
     ajax.post(this.API_ENDPOINT, this.data(), (response) => {
       that.response = JSON.parse(response);
-      
+
       callback({success: that._rulesPassed()});
     });
   }

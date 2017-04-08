@@ -3,7 +3,7 @@
 The Insurance platform-agnostic docs are a way to integrate to our products without a wrapper.
 In order to do this, you'll need as a requirement the `CURL` library installed to debug your requests and responses.
 
-- API BASE URL: `https://www.paycertify.com/`
+- API BASE URL: `https://api.paycertify.com/`
 
 ### Authentication
 
@@ -74,7 +74,7 @@ curl -v -X POST \
         "thank_you_page_url":"",
         "metadata":""
     }' \
-    "https://www.paycertify.com/api/v1/merchant/transactions"
+    "https://api.paycertify.com/api/v1/merchant/transactions"
 ```
 
 ##### Response Sample
@@ -201,4 +201,3 @@ curl -v -X POST \
    "transaction":null
 }
 ```
-

@@ -42,7 +42,7 @@ curl -v -X GET \
 ### Step 2: ordering
 
 ##### Endpoint
-`/api/v1/1/orders`
+`/api/v1/:CLIENT_ID/orders`
 
 ##### Request Fields
 

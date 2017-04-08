@@ -18,7 +18,7 @@ class Confirmation {
 
   public static $api_key;
 
-  const API_ENDPOINT = 'https://www.paycertify.com/';
+  const API_ENDPOINT = 'https://api.paycertify.com/';
 
   const MANDATORY_FIELDS = [
     'transaction_id', 'cc_last_four_digits', 'name', 'email',
