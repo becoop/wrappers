@@ -1,4 +1,4 @@
-## 3DS – Platform agnostic version and NMI integration
+## 3DS – PayCertify 3DS wrapper and NMI integration
 
 ### Authentication, Card Enrollment and Payment Authentication Request
 
@@ -82,11 +82,5 @@ curl -v -X POST \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -d 'username=XXXXXX&password=YYYYYY&ccnumber=&ccexp=&amount=&cvv=&ipaddress=&orderid=&orderdescription=&tax=&shipping=&ponumber=&firstname=&lastname=&company=&address1=&address2=&city=&state=&zip=&country=&phone=&fax=&email=&website=&shipping_firstname=&shipping_lastname=&shipping_company=&shipping_address1=&shipping_address2=&shipping_city=&shipping_state=&shipping_zip=&shipping_country=&shipping_email=&type=sale&eci=05&cavv=&xid=&cardholder_auth=verified' \
     "https://secure.networkmerchants.com/api/transact.php"
-```
-
-##### Response sample
-
-```
-
 ```
 
