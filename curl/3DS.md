@@ -3,7 +3,7 @@
 The 3D Secure platform-agnostic docs are a way to integrate to our products without a wrapper.
 In order to do this, you'll need as a requirement the `CURL` library installed to debug your requests and responses.
 
-- API TEST BASE URL: https://mpi.3dsintegrator.com/index_demo.php
+- API TEST BASE URL: https://mpi.3dsintegrator.com/index-demo.php
 - API LIVE BASE URL: https://mpi.3dsintegrator.com/index.php
 
 ### Authentication
@@ -36,8 +36,7 @@ Not every card is able to run 3DS, so in this first step we check for card's enr
 
 ##### CURL Sample:
 ```bash
-curl -v -X POST -H 'User-Agent: Faraday v0.11.0' \
-  -H 'Content-Type: application/json' \
+curl -v -X POST -H 'Content-Type: application/json' \
   -H 'x-mpi-api-key: nNucSXwFw3sXYKE4NUQIZgWTPX71MLa0' \
   -H 'x-mpi-signature: 1b742fab984f86b141991917c71c99b81109078e4874ce1c9fb925a038af0386' \
   -d '{"pan":"4111111111111111"}' \
@@ -67,8 +66,7 @@ Whenever you get a "Y" from the previous step, you're ready to start the Payment
 
 ##### CURL Sample:
 ```bash
-curl -v -X POST -H 'User-Agent: Faraday v0.11.0' \
-  -H 'Content-Type: application/json' \
+curl -v -X POST -H 'Content-Type: application/json' \
   -H 'x-mpi-api-key: nNucSXwFw3sXYKE4NUQIZgWTPX71MLa0' \
   -H 'x-mpi-signature: 16851d38cdc413e3481fedc17b03fb080eaf45a1ab20a4e6b9c7c2bb93a72799' \
   -d '{
@@ -117,14 +115,9 @@ The strict mode consists in actually sending the user to VISA and MasterCard's w
 </script>
 ```
 
-You will receive a `POST` at the `$TermUrl` containing CAVV, ECI and XID, which are the critical data to be sent through the gateway for 3DS authentication.
-
 ##### Strategy 2: Frictionless mode
 
 The frictionless mode consist in inserting an IFRAME to your checkout page and waiting for the 3DS response.
-In this case, the `$TermUrl` should check is the parameter `PaRes` is sent through `POST`. 
-- If `PaRes` param it is, you should render a JSON response and the script below will take care of final redirections;
-- If `_3ds_frictionless_callback` is present, it is because the transaction has finshed.
 
 ```html
 <style> #frame { display: none; } </style>
@@ -183,4 +176,37 @@ In this case, the `$TermUrl` should check is the parameter `PaRes` is sent throu
 </script>
 ```
 
-Whenever you get a `_3ds_frictionless_callback` parameter on your response at `$TermUrl`, you should check for the CAVV, ECI and XID parameters – these are required to be sent through the gateway for finishing the 3DS process.
+### Response authentication
+
+Last step consists in sending the PARES to the API in exchange for the fields that you will need to send to the gateway for finishing the 3DS process:
+
+
+```bash
+curl -v -X POST -H 'Content-Type: application/json' \
+  -H 'x-mpi-api-key: nNucSXwFw3sXYKE4NUQIZgWTPX71MLa0' \
+  -H 'x-mpi-signature: c2cc490e0d1c34f4498f14159230b69af396ff56d6509bdcbba26cbf43179f5e' \
+  -d '{
+    "amount":2,
+    "card_exp_month":"12",
+    "card_exp_year":"2020",
+    "message_id":"0001",
+    "pan":"4111111111111111",
+    "pares":"PARES",
+    "return_url":"https://localhost:9292/3ds/strict_callback",
+    "transaction_id":"0001"
+  }' "https://mpi.3dsintegrator.com/index.php/auth-response"
+```
+
+Response should contain CAVV, ECI and XID fields. 
+
+If these fields are present on the response, you should forward this data to your gateway. Each gateway has it's own way to receive these parameters, so be aware that this should be checked on the gateway docs. 
+
+If these fields are not present, this authentication failed. At this point, is up to you to either process the transaction through the gateway or just block it.
+
+#### Sidenote for frictionless mode:
+
+Since frictionless mode doesn't redirect you off of the site, you should do the following at the $TermUrl route:
+
+- If `PaRes` parameter is present, you should render a JSON response containing the POST fields as plain JSON;
+- If `_3ds_frictionless_callback` is present, it is because the transaction has finshed. You should have also on the `POST` params the CAVV, ECI and XID, which should be forwarded to the gateway for 3DS authentication.
+
