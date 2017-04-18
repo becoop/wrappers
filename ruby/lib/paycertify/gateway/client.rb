@@ -48,6 +48,7 @@ module PayCertify
         def connection
           @connection ||= Faraday.new(url: api_endpoint, ssl: {verify: false}) do |faraday|
             faraday.request :url_encoded
+            faraday.request :curl, Logger.new(STDOUT), :warn
             faraday.response :logger
             faraday.adapter  Faraday.default_adapter
           end

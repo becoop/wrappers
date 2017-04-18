@@ -5,17 +5,20 @@ module PayCertify
     class Transaction < PayCertify::Gateway::Base::Resource
 
       API_ENDPOINT = '/ws/encgateway2.asmx/ProcessCreditCard'
-      
+
       ATTRIBUTES = [
-        :transaction_id, :type, :amount, :currency, :card_number, :expiration_month, :expiration_year, 
-        :name_on_card, :cvv, :billing_address, :billing_city, :billing_state, :billing_country, 
-        :billing_zip, :shipping_address, :shipping_city, :shipping_state, :shipping_country,  :shipping_zip, 
-        :email, :phone, :ip, :order_description, :customer_id
+        :transaction_id, :type, :amount, :currency, :card_number, :expiration_month, :expiration_year,
+        :name_on_card, :cvv, :billing_address, :billing_city, :billing_state, :billing_country,
+        :billing_zip, :shipping_address, :shipping_city, :shipping_state, :shipping_country,  :shipping_zip,
+        :email, :phone, :ip, :order_description, :customer_id, :cavv, :eci, :xid, :tdsecurestatus
       ]
+
+      THREEDS_ATTRIBUES = [:cavv, :eci, :xid]
 
       attr_accessor *ATTRIBUTES
 
       def save!
+        add_3ds_params
         super
         self.transaction_id = response['response']['pn_ref']
         self
@@ -31,6 +34,20 @@ module PayCertify
         formatted.merge! attribute_mapping.expiration_date(self)
         formatted.merge! attribute_mapping.type(self)
         formatted
+      end
+
+      def add_3ds_params
+        tds_params = { 'cavv_algorithm' => '2', 'status' => 'Y' }
+        if Gateway::mode == 'test'
+          tds_params['cavv'] = 'Base64EncodedCAVV=='
+          tds_params['xid'] = ''
+          tds_params['eci'] = '05'
+        else
+          THREEDS_ATTRIBUES.each do |attribute|
+            tds_params[attribute.to_sym] = self.send(attribute) if self.send(attribute).present?
+          end
+        end
+        self.send("tdsecurestatus=", tds_params)
       end
 
       class Validation < PayCertify::Gateway::Base::Validation
@@ -49,7 +66,7 @@ module PayCertify
           { name: :billing_state, validation: :no_validation, required: true },
           { name: :billing_country, validation: :no_validation, required: true },
           { name: :billing_zip, validation: :zip_validation, required: true },
-          
+
           # Optional fields
           { name: :shipping_zip, validation: :zip_validation, required: false },
           { name: :email, validation: :email_validation, required: false },
