@@ -2,6 +2,7 @@
 
 namespace PayCertify\Gateway;
 
+use PayCertify\Gateway;
 use PayCertify\Gateway\Base\Resource;
 
 class Transaction extends Resource {
@@ -12,8 +13,10 @@ class Transaction extends Resource {
     'transaction_id', 'type', 'amount', 'currency', 'card_number', 'expiration_month', 'expiration_year',
     'name_on_card', 'cvv', 'billing_address', 'billing_city', 'billing_state', 'billing_country',
     'billing_zip', 'shipping_address', 'shipping_city', 'shipping_state', 'shipping_country',  'shipping_zip',
-    'email', 'phone', 'ip', 'order_description', 'customer_id'
+    'email', 'phone', 'ip', 'order_description', 'customer_id', 'xid', 'eci', 'cavv'
   ];
+
+  const THREEDS_ATTRIBUTES = ['xid', 'eci', 'cavv'];
 
   public function __construct($attributes) {
     parent::__construct($attributes);
@@ -39,6 +42,7 @@ class Transaction extends Resource {
    * @return $this
    */
   public function save() {
+    $this->add3DSParams();
     parent::save();
     $this->transaction_id = (string) $this->getResponse()->PNRef;
     return $this;
@@ -60,5 +64,22 @@ class Transaction extends Resource {
       AttributeMapping::expirationDate($this),
       AttributeMapping::type($this)
     );
+  }
+
+  private function add3DSParams() {
+    $tdsParams = ['cavv_algorithm' => '2', 'status' => 'Y'];
+    if(Gateway::$mode == 'test') {
+      $tdsParams['xid'] = '';
+      $tdsParams['eci'] = '05';
+      $tdsParams['cavv'] = 'Base64EncodedCAVV==';
+    } else {
+      foreach (self::THREEDS_ATTRIBUTES as $attribute) {
+        if(isset($this->$attribute)) {
+          $tdsParams[$attribute] = $this->$attribute;
+          unset($this->$attribute);
+        }
+      }
+    }
+    $this->__set('tdsecurestatus', $tdsParams);
   }
 }

@@ -25,7 +25,8 @@ module PayCertify
             'Email' => :email,
             'Description' => :order_description,
             'CustomerID' => :customer_id,
-            'ServerID' => :ip
+            'ServerID' => :ip,
+            'tdsecurestatus' => :tdsecurestatus
           }
         end
 

@@ -35,7 +35,9 @@ $gateway->post('/sale', function (Request $request) use ($app) {
    * params sent are: type, amount, currency, card_number, expiration_month,
    * expiration_year, name_on_card, cvv, transaction_id, billing_city, billing_state,
    * billing_country, billing_zip, shipping_address, shipping_city, shipping_state,
-   * shipping_country, shipping_zip, email, phone, ip, order_description, customer_id, metadata
+   * shipping_country, shipping_zip, email, phone, ip, order_description, customer_id, metadata,
+   *
+   * for 3DS you should also have there params:xid,eci,cavv.
    */
   $transaction = new PayCertify\Gateway\Transaction($request->request->all());
 
