@@ -1,6 +1,6 @@
 ## Fraud Prevention – Platform agnostic version
 
-The Insurance platform-agnostic docs are a way to integrate to our products without a wrapper.
+The Fraud Prevention platform-agnostic docs are a way to integrate to our products without a wrapper.
 In order to do this, you'll need as a requirement the `CURL` library installed to debug your requests and responses.
 
 - API BASE URL: `https://api.paycertify.com/`
