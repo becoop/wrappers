@@ -29,6 +29,7 @@ class AttributeMapping {
       'Description'     => 'order_description',
       'CustomerID'      => 'customer_id',
       'ServerID'        => 'ip',
+      '3dsecure'        => 'tdsecure',
       'tdsecurestatus'  => 'tdsecurestatus'
     ];
   }
