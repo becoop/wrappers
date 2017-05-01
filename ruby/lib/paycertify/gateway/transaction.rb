@@ -10,7 +10,7 @@ module PayCertify
         :transaction_id, :type, :amount, :currency, :card_number, :expiration_month, :expiration_year,
         :name_on_card, :cvv, :billing_address, :billing_city, :billing_state, :billing_country,
         :billing_zip, :shipping_address, :shipping_city, :shipping_state, :shipping_country,  :shipping_zip,
-        :email, :phone, :ip, :order_description, :customer_id, :cavv, :eci, :xid, :tdsecurestatus
+        :email, :phone, :ip, :order_description, :customer_id, :cavv, :eci, :xid, :tdsecurestatus, :tdsecure
       ]
 
       THREEDS_ATTRIBUES = [:cavv, :eci, :xid]
@@ -37,17 +37,22 @@ module PayCertify
       end
 
       def add_3ds_params
-        tds_params = { 'cavv_algorithm' => '2', 'status' => 'Y' }
-        if Gateway::mode == 'test'
-          tds_params['cavv'] = 'Base64EncodedCAVV=='
-          tds_params['xid'] = ''
-          tds_params['eci'] = '05'
-        else
-          THREEDS_ATTRIBUES.each do |attribute|
-            tds_params[attribute.to_sym] = self.send(attribute) if self.send(attribute).present?
+        if able_to_3ds?
+          tds_params = { 'cavv_algorithm' => '2', 'status' => 'Y' }
+          if Gateway::mode == 'test'
+            tds_params.merge({'cavv' => 'Base64EncodedCAVV==', 'xid' => '', 'eci' => '05'})
+          else
+            THREEDS_ATTRIBUES.each do |attribute|
+              tds_params[attribute.to_sym] = self.send(attribute) if self.send(attribute).present?
+            end
           end
+          self.send("tdsecurestatus=", tds_params.to_json)
+          self.send("tdsecure=", '1')
         end
-        self.send("tdsecurestatus=", tds_params)
+      end
+
+      def able_to_3ds?
+        self.send(:eci).present? && self.send(:xid).present? & self.send(:cavv).present?
       end
 
       class Validation < PayCertify::Gateway::Base::Validation
