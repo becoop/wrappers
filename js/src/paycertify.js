@@ -101,7 +101,7 @@ PayCertify.Checkout = class {
   }
 
   _displayErrors() {
-    var event = new CustomEvent('paycertifyCheckoutFailure', { detail: this.errors });
+    var event = new CustomEvent('paycertifyCheckoutFailure', { detail: { response: this.response, errors: this.errors } });
     window.dispatchEvent(event)
     this.errors = [];
   }
@@ -176,8 +176,6 @@ PayCertify.Checkout = class {
   }
 
   _rulesPassed() {
-    console.log(this.response);
-
     if (this.rules.mode.toLowerCase() == 'and') {
       return (this._recommendationPassed() && this._maxRulesTriggeredPassed() && this._maxScorePassed());
     } else if (this.rules.mode.toLowerCase() == 'or') {

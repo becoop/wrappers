@@ -3,3 +3,4 @@ ruby/paycertify-*
 **/tmp/*
 **/.git
 .idea
+**/node_modules

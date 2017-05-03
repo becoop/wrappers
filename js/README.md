@@ -148,4 +148,57 @@ window.addEventListener('paycertifyCheckoutFailure', function (e) {
 }, false);
 ```
 
+A sample `e.detail` object looks like this:
+
+```js
+{
+  errors: {
+    recommendation: "This transaction was declined." 
+  },
+  response: {
+    k_auto:"D",
+    k_brand:"NONE",
+    k_browser:null,
+    k_cards:"1",
+    k_city_of_pierced_ip:null,
+    k_counters_triggered:0,
+    k_country_of_pierced_ip:null,
+    k_date_device_first_seen:null,
+    k_device:"1",
+    k_device_screen_resolution:null,
+    k_email:"1",
+    k_geox:"TH",
+    k_ip_city:null,
+    k_ip_country:null,
+    k_ip_org:null,
+    k_ip_region:null,
+    k_kaptcha:"N",
+    k_latitude_of_pierced_ip:null,
+    k_longitude_of_pierced_ip:null,
+    k_longitude_of_proxy_ip:null,
+    k_mastercard:"",
+    k_merchant:"691000",
+    k_mode:"Q",
+    k_network:"N",
+    k_order:"f19a9f1b5fc7002f5c414e0b9b8613ff",
+    k_os:null,
+    k_owner_of_pierced_ip:null,
+    k_pierced_ip_address:null,
+    k_reason_code:null,
+    k_region:null,
+    k_region_of_pierced_ip:null,
+    k_rule_description:"GEOX Review Lower Risk Countries",
+    k_rule_id_0:"233505",
+    k_rules_triggered:6,
+    k_score:"31",
+    k_session_id:"12345678901234567890",
+    k_transaction_id:"PH1Y07DHJLZX",
+    k_user_agent_string:null,
+    k_velocity:"1",
+    k_version:"0630",
+    k_vmax:"1"
+  }
+}
+```
+
 If you run into any issues, please contact us at [engineering@paycertify.com](mailto:engineering@paycertify.com)
