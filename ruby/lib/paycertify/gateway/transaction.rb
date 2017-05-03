@@ -52,7 +52,7 @@ module PayCertify
       end
 
       def able_to_3ds?
-        self.send(:eci).present? && self.send(:xid).present? & self.send(:cavv).present?
+        self.send(:eci).present? && self.send(:xid).present? && self.send(:cavv).present?
       end
 
       class Validation < PayCertify::Gateway::Base::Validation
