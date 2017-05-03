@@ -91,7 +91,8 @@ PayCertify.Checkout = class {
       state: this.inputFor('state').value,
       country: this.inputFor('country').value,
       zip: this.inputFor('zip').value,
-      amount: this.inputFor('amount').value
+      amount: this.inputFor('amount').value,
+      session_id: this.inputFor('session_id').value
     };
   }
 

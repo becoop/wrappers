@@ -58,10 +58,11 @@ Both endpoints (logo.htm and logo.gif) should respond with the following snippet
 ?>
 ```
 
-\* Please use your programming language choice to do something similar.
-\*\* Make sure you have supplied your MERCHANT_URL and static image URL to Kount in order to make this step work.
+\* Please use your programming language choice to do something similar. Also, make sure you have supplied your MERCHANT_URL and static image URL to Kount in order to make this step work.
 
 #### Capture credit card data
+
+This step consists in sending credit card data into Kount's API. You'll be using the session ID generated on previous examples as well.
 
 Download paycertify.js from the `dist` directory by [clicking here](https://github.com/PayCertify/wrappers/blob/master/js/dist/paycertify.js);
 
@@ -99,6 +100,7 @@ Set the `data-paycertify` data attributes to your form elements as below. All th
   <input data-paycertify="zip"/><br/><br/>
 
   <input type="hidden" name="amount" data-paycertify="amount" value="1.00"/>
+  <input type="hidden" name="session_id" data-paycertify="session_id" value="$YOUR_SESSION_ID_FROM_PREVIOUS_STEPS"/>
 
   <input type="submit"/>
 </form>
