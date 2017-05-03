@@ -8,9 +8,7 @@ First of all, make sure you have the following credentials:
 - You have set up your MERCHANT_URL in your Kount account.
 
 
-# Step 1: Capture device information
-
-#### Generating your Session ID
+# Generating your Session ID
 
 Before rendering the payment method selection page or shopping cart overview, you will need to tie a unique identifier to this transaction that should be 1-32 characters long. This unique identifier should be stored in a session variable as this will be used all the way across the process. This identifier must be unique for at least 30 days and must be unique for every transaction submitted by each unique customer. If a single session ID were to be used on multiple transactions, those transactions would link together and erroneously affect the persona information and Kount score.
 
@@ -35,7 +33,7 @@ if (!$sess) {
 \* Please use your programming language choice to do something similar.
 
 
-#### Data Collector
+# Data Collector
 
 Insert the following `<iframe>` on your payment method selection or shopping cart overview page. The iframe should be placed usually near the bottom of the page. The iframe has a minimum width=1 and height=1.
 
@@ -60,7 +58,7 @@ Both endpoints (logo.htm and logo.gif) should respond with the following snippet
 
 \* Please use your programming language choice to do something similar. Also, make sure you have supplied your MERCHANT_URL and static image URL to Kount in order to make this step work.
 
-#### Capture credit card data
+# Capture credit card data
 
 This step consists in sending credit card data into Kount's API. You'll be using the session ID generated on previous examples as well.
 
