@@ -70,7 +70,7 @@ $DATA=`cat ./3ds/tmp/out.json`
 if [ "$MODE" = "live" ]; then
   FULL_URL="https://mpi.3dsintegrator.com/index.php$ENDPOINT"
 elif [ "$MODE" = "test" ]; then
-  FULL_URL="https://mpi.3dsintegrator.com/index-demo.php$ENDPOINT"
+  FULL_URL="https://mpi.3dsintegrator.com/index_demo.php$ENDPOINT"
 fi
 
 SIGNATURE=$API_KEY$FULL_URL$DATA$API_SECRET
