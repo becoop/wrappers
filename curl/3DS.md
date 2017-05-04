@@ -95,11 +95,29 @@ curl -v -X POST -H 'Content-Type: application/json' \
 
 After having the PAREQ token, you're ready to redirect your user to VISA or MasterCard's confirmation.
 You should render a template with a form that auto submits and starts the 3DS process.
-ATTENTION: For this step you will need to run the HTML file from a SSL connection (https) otherwise VISA and MasterCard won't return any data.
+ATTENTION: For this step you will need to run the HTML file from a SSL connection (https) otherwise VISA and MasterCard won't return any data. Here's some sample code to run your HTTPs: web server.
+
+Step 1) Create a new file called `simple-https-server.py`
+```python
+# Name this file as "simple-https-server.py"
+import BaseHTTPServer, SimpleHTTPServer
+import ssl
+
+httpd = BaseHTTPServer.HTTPServer(('localhost', 4443), SimpleHTTPServer.SimpleHTTPRequestHandler)
+httpd.socket = ssl.wrap_socket (httpd.socket, certfile='./server.pem', server_side=True)
+httpd.serve_forever()
+```
+
+Step 2) Run the following code to generate the server.pem key
+```sh
+openssl req -new -x509 -keyout server.pem -out server.pem -days 365 -nodes
+```
+
+Step 3) Run the server by running `python simple-https-server.py`
 
 ##### Strategy 1: Strict mode
 
-The strict mode consists in actually sending the user to VISA and MasterCard's website.
+The strict mode consists in actually sending the user to VISA and MasterCard's website. These files should be placed on the same level which the server file has been placed.
 \* Please note that the variables below prefixed with `$` are gathered from the response at the previous step (see above).
 
 ```html
