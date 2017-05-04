@@ -95,6 +95,7 @@ curl -v -X POST -H 'Content-Type: application/json' \
 
 After having the PAREQ token, you're ready to redirect your user to VISA or MasterCard's confirmation.
 You should render a template with a form that auto submits and starts the 3DS process.
+ATTENTION: For this step you will need to run the HTML file from a SSL connection (https) otherwise VISA and MasterCard won't return any data.
 
 ##### Strategy 1: Strict mode
 
