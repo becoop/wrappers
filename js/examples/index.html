@@ -11,8 +11,7 @@
   <body>
     <h1> Checkout </h1>
 
-    <form>
-
+    <form action="https://localhost:8080/" method="POST">
       <label for="name">Name</label><br/>
       <input value="John Doe" name="name" data-paycertify="name"/><br/><br/>
 
@@ -37,11 +36,16 @@
       <label for="zip">ZIP</label><br/>
       <input value="30123" name="zip" data-paycertify="zip"/><br/><br/>
 
+
+      <label for="cc">Credit card</label><br/>
+      <input value="" name="cc"/><br/><br/>
+
       <input type="hidden" name="amount" data-paycertify="amount" value="1.00"/>
-      <input type="hidden" name="session_id" data-paycertify="session_id" value="12345678901234567890"/>
+      <input type="hidden" name="session_id" data-paycertify="session_id" value="9fdd27296d75cb6"/>
+      
+      <input type="hidden" id="kount-errors" name="errors"/>
 
       <input type="submit"/><br/><br/>
-
     </form>
 
     <script>
@@ -68,7 +72,7 @@
 
           // Maximum score tolerated. Minimum is 1 and maximum is 99.
           // Default: 50
-          maxScore: 50,
+          maxScore: 50
         }
       });
 
@@ -76,8 +80,16 @@
       // like to your design. e.detail contains an object with the errors.
       //
       window.addEventListener('paycertifyCheckoutFailure', function (e) {
-        console.log(e.detail);
+        // Transaction declined -> send user to payment declined page;
+        var form = document.querySelectorAll('form');
+        var errors = document.getElementById('kount-errors');
+        errors.value = JSON.stringify(e.detail);
+        form[0].submit();
       }, false);
     </script>
+
+    <iframe width=1 height=1 frameborder=0 scrolling=no src="https://localhost:3000/kount?m=691000&s=9fdd27296d75cb6">
+      <img width=1 height=1 src="https://localhost:3000/kount?m=691000&s=9fdd27296d75cb6">
+    </iframe>
   </body>
 </html>
