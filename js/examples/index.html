@@ -80,16 +80,22 @@
       // like to your design. e.detail contains an object with the errors.
       //
       window.addEventListener('paycertifyCheckoutFailure', function (e) {
-        // Transaction declined -> send user to payment declined page;
-        var form = document.querySelectorAll('form');
-        var errors = document.getElementById('kount-errors');
-        errors.value = JSON.stringify(e.detail);
-        form[0].submit();
+        // Transaction declined -> send data anyways;
+        // var form = document.querySelectorAll('form');
+        // var errors = document.getElementById('kount-errors');
+        // errors.value = JSON.stringify(e.detail);
+        // form[0].submit();
+
+
+        // Transaction declined -> send to a specific page:
+        // window.location.href = 'http://example.com/payment_declined'
+
+        console.log(e.detail);
       }, false);
     </script>
 
-    <iframe width=1 height=1 frameborder=0 scrolling=no src="https://localhost:3000/kount?m=691000&s=9fdd27296d75cb6">
-      <img width=1 height=1 src="https://localhost:3000/kount?m=691000&s=9fdd27296d75cb6">
+    <iframe width=1 height=1 frameborder=0 scrolling=no src="https://YOUR_SERVER_URL/kount?m=691000&s=9fdd27296d75cb6">
+      <img width=1 height=1 src="https://YOUR_SERVER_URL?m=691000&s=9fdd27296d75cb6">
     </iframe>
   </body>
 </html>
